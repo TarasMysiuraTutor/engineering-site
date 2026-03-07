@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
-import { getLocalizedPath, getLocalizedPathImages } from "@/lib/routes";
+import { getLocalizedPath } from "@/lib/routes";
 
 import Image from "next/image";
 
