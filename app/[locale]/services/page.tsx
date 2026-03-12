@@ -4,12 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSectionSlug, buildUrl } from "@/lib/routes";
 
-export async function generateStaticParams() {
-  return locales.map((locale) => ({
-    locale,
-    section: getSectionSlug("services", locale),
-  }));
-}
+// export async function generateStaticParams() {
+//   return locales.map((locale) => ({
+//     locale,
+//     section: getSectionSlug("services", locale),
+//   }));
+// }
 
 export default async function ServicesPage({
   params,

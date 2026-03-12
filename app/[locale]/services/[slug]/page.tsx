@@ -4,14 +4,14 @@ import type { Locale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import { getSectionSlug, buildUrl } from "@/lib/routes";
 
-export async function generateStaticParams() {
-  return [
-    { locale: "de", section: "leistungen" },
-    { locale: "en", section: "services" },
-    { locale: "uk", section: "poslugy" },
-    { locale: "ru", section: "uslugi" },
-  ];
-}
+// export async function generateStaticParams() {
+//   return [
+//     { locale: "de", section: "leistungen" },
+//     { locale: "en", section: "services" },
+//     { locale: "uk", section: "poslugy" },
+//     { locale: "ru", section: "uslugi" },
+//   ];
+// }
 
 export default async function ServiceDetailPage({
   params,

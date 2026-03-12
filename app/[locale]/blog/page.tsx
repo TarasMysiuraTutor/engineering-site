@@ -71,10 +71,9 @@ export default async function BlogPage({
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
-  const { locale } = params;
-
+  const { locale } = await params;
   const isGerman = locale === "de";
 
   const title = isGerman

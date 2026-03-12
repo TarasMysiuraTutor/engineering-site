@@ -28,38 +28,28 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   return (
-    <div>
-      <Header locale={locale as any} dict={dict} />
-      <header className="flex justify-end p-6">
-        <LanguageSwitcher />
-      </header>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "TechConsult Engineering",
-            url: process.env.NEXT_PUBLIC_SITE_URL|| "http://localhost:3000",
-            logo: "/logo-dark.svg",
-          }),
-        }}
-      />
-      {children}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "TechConsult Engineering",
-            url: process.env.NEXT_PUBLIC_SITE_URL|| "http://localhost:3000",
-            logo: "/logo-dark.svg",
-            sameAs: [],
-          }),
-        }}
-      />
-    </div>
+    <html lang={locale}>
+      <div>
+        <Header locale={locale as any} dict={dict} />
+        <header className="flex justify-end p-6">
+          <LanguageSwitcher />
+        </header>
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "TechConsult Engineering",
+              url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+              logo: "/logo-dark.svg",
+              sameAs: [],
+            }),
+          }}
+        />
+      </div>
+    </html>
   );
 }
 

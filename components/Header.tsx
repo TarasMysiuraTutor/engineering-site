@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation";
 
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
-import { getLocalizedPath } from "@/lib/routes";
-
+import { getLocalizedPath, routes } from "@/lib/routes";
+import {  } from "@/lib/routes";
 import Image from "next/image";
 
 type HeaderProps = {
@@ -20,13 +20,12 @@ type NavItem = {
 
 export default function Header({ locale, dict }: HeaderProps) {
   const pathname = usePathname();
-  const navItems = [
-    { label: dict.nav.services, path: "/leistungen" },
-    { label: dict.nav.projects, path: "/projekte" },
-    { label: dict.nav.blog, path: "/blog" },
-    { label: dict.nav.contact, path: "/kontakt" },
-  ];
-
+ const navItems = [
+  { label: dict.nav.services, path: routes.services[locale] },
+  { label: dict.nav.projects, path: routes.projects[locale] },
+  { label: dict.nav.blog, path: routes.blog[locale] },
+  { label: dict.nav.contact, path: routes.contact[locale] },
+];
   function switchLocale(targetLocale: string) {
     if (!pathname) return `/${targetLocale}`;
 
@@ -49,9 +48,11 @@ export default function Header({ locale, dict }: HeaderProps) {
         >
           <Image
             src="/logo-dark.svg"
-            alt="TechConsult"
-            width={160}
-            height={50}
+            alt="Logo"
+            width={140}
+            height={40}
+            style={{ width: "auto", height: "auto" }}
+            priority
           />
         </Link>
 
