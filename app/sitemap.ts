@@ -1,10 +1,20 @@
 import { MetadataRoute } from "next";
 
+import en from "@/dictionaries/en";
+import de from "@/dictionaries/de";
+import uk from "@/dictionaries/uk";
+import ru from "@/dictionaries/ru";
+
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL!;
 
-const locales = ["de", "en", "uk", "ru"] as const
+const dictionaries = {
+  en,
+  de,
+  uk,
+  ru,
+};
 
-const defaultLocale = "de"
+const locales = Object.keys(dictionaries) as (keyof typeof dictionaries)[];
 
 const articles = [
   "externer-engineering-consultant",
@@ -14,56 +24,55 @@ const articles = [
   "modernisierung-industrieanlagen",
 ];
 
-const routes = [
-  "",
-  "/services",
-  "/blog",
-]
-// export default function sitemap(): MetadataRoute.Sitemap {
-//   const blogUrls = articles.flatMap((slug) =>
-//     locales.map((locale) => ({
-//       url: `${baseUrl}/${locale}/blog/${slug}`,
-//       lastModified: new Date(),
-//       changeFrequency: "monthly" as const,
-//       priority: 0.7,
-//     }))
-//   );
-
-//   const staticUrls = locales.map((locale) => ({
-//     url: `${baseUrl}/${locale}`,
-//     lastModified: new Date(),
-//     changeFrequency: "weekly" as const,
-//     priority: 1,
-//   }));
-
-//   return [...staticUrls, ...blogUrls];
-// }
-
-
-
-
-
-
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://example.com"
+  const urls: MetadataRoute.Sitemap = [];
 
-  const urls: MetadataRoute.Sitemap = []
+  for (const locale of locales) {
+    const dict = dictionaries[locale];
 
-  for (const route of routes) {
-    for (const locale of locales) {
-      const url =
-        locale === defaultLocale
-          ? `${baseUrl}/${locale}${route}`
-          : `${baseUrl}/${locale}${route}`
+    // home
+    urls.push({
+      url: `${baseUrl}/${locale}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1,
+    });
 
+    // services page
+    urls.push({
+      url: `${baseUrl}/${locale}/${dict.services.nav.servicesSlug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    });
+
+    // service pages
+    for (const service of dict.services.list) {
       urls.push({
-        url,
+        url: `${baseUrl}/${locale}/${dict.services.nav.servicesSlug}/${service.slug}`,
         lastModified: new Date(),
-        changeFrequency: "weekly",
-        priority: route === "" ? 1 : 0.8,
-      })
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+
+    // blog
+    urls.push({
+      url: `${baseUrl}/${locale}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    });
+
+    for (const slug of articles) {
+      urls.push({
+        url: `${baseUrl}/${locale}/blog/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
     }
   }
 
-  return urls
+  return urls;
 }

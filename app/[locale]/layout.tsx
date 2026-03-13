@@ -7,32 +7,27 @@ import { siteUrl } from "@/lib/seo";
 
 import { getDictionary } from "@/lib/getDictionary";
 
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 };
 
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
-  const dict = await getDictionary(locale as any);
-
-  if (!locales.includes(locale as Locale)) {
+  if (!locales.includes(locale)) {
     notFound();
   }
 
+  const dict = await getDictionary(locale);
+
   return (
     <div>
-      <Header locale={locale as any} dict={dict} />
-      <header className="flex justify-end p-6">
-        {/* <LanguageSwitcher /> */}
-      </header>
+      <Header locale={locale} dict={dict} />
       {children}
       <script
         type="application/ld+json"
@@ -57,7 +52,7 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const dict = await getDictionary(locale as any);
+  const dict = await getDictionary(locale);
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -78,12 +73,20 @@ export async function generateMetadata({
     alternates: {
       canonical: `${baseUrl}/${locale}`,
       languages: {
-        de: `${baseUrl}/de`,
-        en: `${baseUrl}/en`,
-        uk: `${baseUrl}/uk`,
-        ru: `${baseUrl}/ru`,
+        ...languages,
         "x-default": `${baseUrl}/de`,
       },
     },
+
+    // alternates: {
+    //   canonical: `${baseUrl}/${locale}`,
+    //   languages: {
+    //     de: `${baseUrl}/de`,
+    //     en: `${baseUrl}/en`,
+    //     uk: `${baseUrl}/uk`,
+    //     ru: `${baseUrl}/ru`,
+    //     "x-default": `${baseUrl}/de`,
+    //   },
+    // },
   };
 }
