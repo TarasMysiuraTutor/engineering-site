@@ -57,6 +57,8 @@ export type Dictionary = {
   };
   services: {
     title: string;
+    metaTitle: string;
+    metaDescription: string;
     list: [
       {
         id: string;

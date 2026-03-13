@@ -79,6 +79,9 @@ export const dictionary: Dictionary = {
 
   services: {
     title: "Послуги",
+    metaTitle: "Інженерні послуги",
+    metaDescription:
+      "Технічне планування, аналіз систем і підтримка інженерних проєктів.",
     list: [
       {
         id: "technische-planung",
