@@ -77,3 +77,65 @@ export async function generateMetadata({
     },
   };
 }
+
+
+// import { notFound } from "next/navigation"
+// import Header from "@/components/Header"
+// import { locales, type Locale } from "@/lib/i18n"
+// import { getDictionary } from "@/lib/getDictionary"
+
+// type Props = {
+//   children: React.ReactNode
+//   params: { locale: string }
+// }
+
+// export default async function LocaleLayout({ children, params }: Props) {
+//   const locale = params.locale as Locale
+
+//   if (!locales.includes(locale)) {
+//     notFound()
+//   }
+
+//   const dict = await getDictionary(locale)
+
+//   return (
+//     <div>
+//       <Header locale={locale} dict={dict} />
+//       {children}
+//     </div>
+//   )
+// }
+
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: { locale: string }
+// }) {
+//   const locale = params.locale as Locale
+//   const dict = await getDictionary(locale);
+
+//   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+//   const languages = Object.fromEntries(
+//     locales.map((loc) => [loc, `${baseUrl}/${loc}`]),
+//   );
+
+//   return {
+//     metadataBase: new URL(baseUrl),
+
+//     title: {
+//       default: dict.seo.title,
+//       template: `%s | ${dict.seo.title}`,
+//     },
+
+//     description: dict.seo.description,
+
+//     alternates: {
+//       canonical: `${baseUrl}/${locale}`,
+//       languages: {
+//         ...languages,
+//         "x-default": `${baseUrl}/de`,
+//       },
+//     },
+//   };
+// }
