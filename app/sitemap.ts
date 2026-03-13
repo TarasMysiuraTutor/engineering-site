@@ -5,8 +5,9 @@ import de from "@/dictionaries/de";
 import uk from "@/dictionaries/uk";
 import ru from "@/dictionaries/ru";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL!;
-
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://engineering-site-gold.vercel.app";
+  
 const dictionaries = {
   en,
   de,
