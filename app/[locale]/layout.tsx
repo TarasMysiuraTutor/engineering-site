@@ -10,21 +10,21 @@ export function generateStaticParams() {
 
 type Props = {
   children: React.ReactNode;
-  params: { locale: Locale };
+  params: Promise<{ locale: string }>;
 };
 
 export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } = params;
+  const { locale } = await params;
 
-  if (!locales.includes(locale)) {
+  if (!locales.includes(locale as Locale)) {
     notFound();
   }
 
-  const dict = await getDictionary(locale);
+  const dict = await getDictionary(locale as Locale);
 
   return (
     <div>
-      <Header locale={locale} dict={dict} />
+      <Header locale={locale as Locale} dict={dict} />
       {children}
 
       <script
@@ -47,11 +47,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }): Promise<Metadata> {
-  const { locale } = params;
-
-  const dict = await getDictionary(locale);
+  const { locale } = await params;
+  const dict = await getDictionary(locale as Locale);
+  
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   const languages = Object.fromEntries(
