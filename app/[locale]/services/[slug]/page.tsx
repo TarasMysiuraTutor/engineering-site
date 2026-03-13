@@ -34,8 +34,8 @@ export default async function ServiceDetailPage({
     notFound();
   }
 
-  console.log(dict.services.list);
-  console.log("slug:", slug);
+  // console.log(dict.services.list);
+  // console.log("slug:", slug);
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
