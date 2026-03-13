@@ -2,8 +2,6 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import { locales, type Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
-import { getAlternateLanguages } from "@/lib/seo";
-import { siteUrl } from "@/lib/seo";
 
 import { getDictionary } from "@/lib/getDictionary";
 
@@ -12,9 +10,9 @@ export function generateStaticParams() {
 }
 
 type Props = {
-  children: React.ReactNode;
-  params: Promise<{ locale: Locale }>;
-};
+  children: React.ReactNode
+  params: Promise<{ locale: Locale }>
+}
 
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
@@ -77,16 +75,5 @@ export async function generateMetadata({
         "x-default": `${baseUrl}/de`,
       },
     },
-
-    // alternates: {
-    //   canonical: `${baseUrl}/${locale}`,
-    //   languages: {
-    //     de: `${baseUrl}/de`,
-    //     en: `${baseUrl}/en`,
-    //     uk: `${baseUrl}/uk`,
-    //     ru: `${baseUrl}/ru`,
-    //     "x-default": `${baseUrl}/de`,
-    //   },
-    // },
   };
 }
