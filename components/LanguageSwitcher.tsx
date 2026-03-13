@@ -1,43 +1,108 @@
-"use client"
+// "use client";
 
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import { locales } from "@/lib/i18n"
+// import Link from "next/link";
+// import { usePathname } from "next/navigation";
+
+// import { locales, type Locale } from "@/lib/i18n";
+// import { routeMap, detectRoute, type RouteKey } from "@/lib/routes";
+
+// export default function LanguageSwitcher() {
+//   const pathname = usePathname();
+
+//   const segments = pathname.split("/").filter(Boolean);
+
+//   const currentLocale = segments[0] as Locale | undefined;
+//   const section = segments[1];
+//   const slug = segments[2];
+
+//   const route = section ? detectRoute(section) : null;
+
+//   return (
+//     <div className="flex gap-2 text-sm">
+//       {locales.map((locale) => {
+//         let path = `/${locale}`;
+
+//         if (route) {
+//           const translated = routeMap[route][locale];
+//           path += `/${translated}`;
+
+//           if (slug) {
+//             path += `/${slug}`;
+//           }
+//         }
+
+//         return (
+//           <Link
+//             key={locale}
+//             href={path}
+//             className={locale === currentLocale ? "font-bold" : ""}
+//           >
+//             {locale.toUpperCase()}
+//           </Link>
+//         );
+//       })}
+//     </div>
+//   );
+// }
+
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { locales, type Locale } from "@/lib/i18n";
+import { routeMap, detectRoute } from "@/lib/routes";
+import { getDictionary } from "@/lib/getDictionary";
+
+import { dictionaries } from "@/lib/staticDictionaries";
 
 export default function LanguageSwitcher() {
-  const pathname = usePathname()
-  const currentLocale = pathname.split("/")[1]
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
 
-  const redirectedPathName = (locale: string) => {
-    const segments = pathname.split("/")
-    segments[1] = locale
-    return segments.join("/")
-  }
+  const currentLocale = segments[0] as Locale | undefined;
+  const section = segments[1];
+  const slug = segments.slice(2).join("/");
 
-  const handleClick = (locale: string) => {
-    document.cookie = `locale=${locale}; path=/; max-age=31536000`
-  }
+  const route = section ? detectRoute(section) : null;
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-2 text-sm">
       {locales.map((locale) => {
-        const isActive = locale === currentLocale
+        let path = `/${locale}`;
+
+        if (route) {
+          const translated = routeMap[route][locale];
+          path += `/${translated}`;
+        }
+
+        if (slug && route === "services") {
+          const currentDict = dictionaries[currentLocale as Locale];
+          const targetDict = dictionaries[locale];
+
+          const currentService = currentDict.services.list.find(
+            (s: any) => s.slug === slug,
+          );
+
+          const targetService = targetDict.services.list.find(
+            (s: any) => s.id === currentService?.id,
+          );
+
+          if (targetService) {
+            path += `/${targetService.slug}`;
+          }
+        }
 
         return (
           <Link
             key={locale}
-            href={redirectedPathName(locale)}
-            onClick={() => handleClick(locale)}
-            className={`px-3 py-1 rounded-md text-sm transition ${
-              isActive
-                ? "bg-black text-white"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
+            href={path}
+            className={locale === currentLocale ? "font-bold" : ""}
           >
             {locale.toUpperCase()}
           </Link>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

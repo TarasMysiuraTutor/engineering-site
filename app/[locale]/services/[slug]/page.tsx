@@ -1,38 +1,41 @@
 import { getDictionary } from "@/lib/getDictionary";
-import type { Locale } from "@/lib/i18n";
+import { locales, type Locale } from "@/lib/i18n";
 
 import { notFound } from "next/navigation";
 import { getSectionSlug, buildUrl } from "@/lib/routes";
 
-// export async function generateStaticParams() {
-//   return [
-//     { locale: "de", section: "leistungen" },
-//     { locale: "en", section: "services" },
-//     { locale: "uk", section: "poslugy" },
-//     { locale: "ru", section: "uslugi" },
-//   ];
-// }
+export async function generateStaticParams() {
+  const params: { locale: Locale; slug: string }[] = [];
+
+  for (const locale of locales) {
+    const dict = await getDictionary(locale);
+
+    for (const service of dict.services.list) {
+      params.push({
+        locale,
+        slug: service.slug,
+      });
+    }
+  }
+  return params;
+}
 
 export default async function ServiceDetailPage({
   params,
 }: {
-  params: Promise<{ locale: Locale; section: string; slug: string }>;
+  params: Promise<{ locale: Locale; slug: string }>;
 }) {
-  const { locale, section, slug } = await params;
+  const { locale, slug } = await params;
   const dict = await getDictionary(locale);
 
-  if (section !== dict.services.nav.servicesSlug) {
-    notFound();
-  }
-
-  if (section !== getSectionSlug("services", locale)) {
-    notFound();
-  }
   const service = dict.services.list.find((s) => s.slug === slug);
 
   if (!service) {
     notFound();
   }
+
+  console.log(dict.services.list);
+  console.log("slug:", slug);
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 

@@ -116,7 +116,7 @@ export const dictionary: Dictionary = {
       },
     ],
     nav: {
-      services: "Leistungen",
+      services: "Services",
       servicesSlug: "services",
     },
   },

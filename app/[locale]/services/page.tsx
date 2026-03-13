@@ -2,27 +2,16 @@ import { getDictionary } from "@/lib/getDictionary";
 import { locales, type Locale } from "@/lib/i18n";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSectionSlug, buildUrl } from "@/lib/routes";
-
-// export async function generateStaticParams() {
-//   return locales.map((locale) => ({
-//     locale,
-//     section: getSectionSlug("services", locale),
-//   }));
-// }
+import { buildUrl, serviceSlug, routeMap } from "@/lib/routes";
 
 export default async function ServicesPage({
   params,
 }: {
-  params: Promise<{ locale: Locale; section: string }>;
+  params: Promise<{ locale: Locale }>;
 }) {
-  const { locale, section } = await params;
+  const { locale } = await params;
 
   const dict = await getDictionary(locale);
-
-  if (section !== getSectionSlug("services", locale)) {
-    notFound();
-  }
 
   const services = dict.services.list;
 
@@ -34,7 +23,7 @@ export default async function ServicesPage({
         {services.map((service) => (
           <Link
             key={service.slug}
-            href={`/${locale}/${section}/${service.slug}`}
+            href={`/${locale}/${routeMap.services[locale]}/${service.slug}`}
             className="block border p-6 hover:bg-gray-50"
           >
             <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
@@ -49,14 +38,13 @@ export default async function ServicesPage({
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: Locale; section: string }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
 
   const dict = await getDictionary(locale);
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   return {
     title: `${dict.services.title} | TechConsult Engineering`,

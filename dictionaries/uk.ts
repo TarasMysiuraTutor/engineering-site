@@ -21,7 +21,12 @@ export const dictionary: Dictionary = {
     },
     industries: {
       title: "Галузі",
-      list: ["Машинобудування", "Енергетика", "Промислова автоматизація", "Інфраструктура"],
+      list: [
+        "Машинобудування",
+        "Енергетика",
+        "Промислова автоматизація",
+        "Інфраструктура",
+      ],
     },
     cta: {
       title: "Запит щодо проєкту",
@@ -111,9 +116,9 @@ export const dictionary: Dictionary = {
       },
     ],
     nav: {
-  services: "Leistungen",
-  servicesSlug: "poslugy",
-}
+      services: "Послуги",
+      servicesSlug: "poslugy",
+    },
   },
 };
 
